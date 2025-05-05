@@ -22,3 +22,8 @@ https://github.com/muratyardimci/adwenture-works-data-engineering-project/tree/m
 ## Scripts For Project
 https://github.com/muratyardimci/adwenture-works-data-engineering-project/tree/main/SyanpseSQL
 https://github.com/muratyardimci/adwenture-works-data-engineering-project/blob/main/silver-layer%20.ipynb
+
+# Implementation:
+
+## Part 1: Data Ingestion
+1. Create Resource Group
