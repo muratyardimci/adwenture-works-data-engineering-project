@@ -148,6 +148,15 @@ I show only one transformation. You can look at the Jupyter Notebook to see all 
 
 ### 1. Creating Azure Synapse Analytics
 
+![loading](Implementation-photos/25-synapseyarat.png)
+
+### 2. Adding Role Assignment
+I grant my Synapse workspace’s managed identity the Storage Blob Data Contributor role so I can read and write lake data from Synapse without storing any secrets.. I choose a managed identity because it lets Synapse authenticate to the Data Lake with Azure-issued tokens, so I avoid hard-coding client IDs or secrets and get simpler, safer, and fully automated credential management
+
+![loading](Implementation-photos/26synapseiçinidentity(managedidentity).png)
+
+### 3. 
+
 
 
 
