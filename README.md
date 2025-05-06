@@ -104,6 +104,58 @@ I used a LookupGit activity to retrieve a list of items, and my ForEach loop ite
 
 ![files](Implementation-photos/17.png)
 
+# Transformation(Silver Layer):
+I moved on to the Silver layer, where I’m setting up an Azure Databricks workspace to transform and refine my raw data. This step cleans, validates, and enriches the data, making it ready for further analysis.
+
+### 1. Creating Databricks
+
+![db](Implementation-photos/18databricksoluşturma.png)
+
+### 2. Creating Cluster
+
+![db](Implementation-photos/19cluster-oluşturma.png)
+
+### 3. App Registrations
+I created an Azure AD app registration named ‘awproject_app’ to handle authentication in my solution. This registration provides a Client (Application) ID and Tenant ID, enabling secure access and permissions for my Azure resources.
+
+![app](Implementation-photos/20appregoluşturuldu.png)
+
+### 4. Client Secrets
+This client secret is used by the Azure AD application to securely authenticate and request access tokens. It ensures only authorized applications can call the services and operate on protected data within Azure.
+
+![secrret](Implementation-photos/21-client-secret.png)
+
+### 5. Adding Role
+I assign the ‘awproject_app’ service principal the ‘Storage Blob Data Contributor’ role so it can securely read and write data in the Azure Data Lake. This integration ensures our automated pipelines (Data Factory, Databricks, etc.) have the necessary permissions to manage data across Bronze, Silver, and Gold layers.
+
+![role](Implementation-photos/22-iamrolueklendi.png)
+
+### 6. Connecting To Azure Data Lake Storage Gen 2 Script
+I configure Spark to authenticate Databricks against Azure Data Lake using my registered application credentials. I rely on the ClientCredsTokenProvider to handle OAuth token requests, allowing me to securely read and write data to the Silver layer.
+
+![script](Implementation-photos/23-DATABRICKSIDATAYAACCESS.png)
+
+### 7. Reading and Loading Data
+I load the raw AdventureWorks CSV files from the Bronze container into Spark DataFrames, enabling header and inferSchema so I automatically capture column names and data types. These DataFrames form the input I will cleanse, enrich, and write to the Silver layer.
+
+![loading](Implementation-photos/24-dbdatalarokundutektek.png)
+
+### 8. Transforming Data
+I show only one transformation. You can look at the Jupyter Notebook to see all transformations.
+![loading](Implementation-photos/24-transforming.png)
+
+# Gold Layer:
+
+### 1. Creating Azure Synapse Analytics
+
+
+
+
+
+
+
+
+
 
 
 
