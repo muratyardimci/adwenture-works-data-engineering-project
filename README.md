@@ -69,3 +69,44 @@ I created this dataset to read the ‘products.csv’ file from the ‘bronze’
 
 ![Debugging ETL](Implementation-photos/9-debug-etl.png)
 
+### 10. Building Dynamic Pipeline
+I created new pipeline and I defined three parameters to make my pipeline fully dynamic:
+1. p_rel_url to specify the GitHub file path,
+2. p_sink_folder to determine the target folder in Data Lake,
+3. p_file_name to set the output file name.
+This allows me to handle various files without manually changing each dataset or activity.
+
+![Dynamic pipeline](Implementation-photos/10-create-parameter.png)
+
+![Dynamic pipeline](Implementation-photos/11-create-parameter-source.png)
+
+![Dynamic pipeline](Implementation-photos/12-create-parameter-sink.png)
+
+### 11. Creating Values For Key Parameters
+I used a ForEach activity to iterate over a dynamic list of files. The ‘Items’ property is parameterized so I can pass in an array of file paths or object metadata, allowing the pipeline to loop through each item without manually configuring multiple activities.
+
+![Dynamic pipeline](Implementation-photos/13-for-each.png)
+
+Next, I wrote the script and uploaded it to that folder for easy reuse in my pipeline. Then I created a ‘parameters’ folder in the data lake to store the iteration script.
+
+![Script](Implementation-photos/13-Iterations_script.png)
+
+![folder](Implementation-photos/14-parameter-folder.png)
+
+### 12. Using Lookup Output to Drive a ForEach Loop
+I set the ForEach Items property to '@activity("LookupGit").output.value' so each row returned by the LookupGit activity can be iterated on without manual intervention.
+
+![loop](Implementation-photos/15-json-pulled-lookup-connected-to-foreach.png)
+
+I used a LookupGit activity to retrieve a list of items, and my ForEach loop iterated through each one, triggering a 'dynamicCopy' operation. As shown in the output, every Copy Data activity succeeded, confirming that my loop and parameters worked correctly.
+
+![loop](Implementation-photos/16-Iterating.png)
+
+![files](Implementation-photos/17.png)
+
+
+
+
+
+
+
