@@ -23,7 +23,7 @@ https://github.com/muratyardimci/adwenture-works-data-engineering-project/tree/m
 https://github.com/muratyardimci/adwenture-works-data-engineering-project/tree/main/SyanpseSQL
 https://github.com/muratyardimci/adwenture-works-data-engineering-project/blob/main/silver-layer%20.ipynb
 
-# Implementation:
+# Implementation(Bronze Layer):
 
 ## Part 1: Data Ingestion
 ### 1. Create Resource Group
