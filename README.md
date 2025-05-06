@@ -142,22 +142,67 @@ I load the raw AdventureWorks CSV files from the Bronze container into Spark Dat
 
 ### 8. Transforming Data
 I show only one transformation. You can look at the Jupyter Notebook to see all transformations.
-![loading](Implementation-photos/24-transforming.png)
+![transforming](Implementation-photos/24-transforming.png)
 
 # Gold Layer:
 
 ### 1. Creating Azure Synapse Analytics
 
-![loading](Implementation-photos/25-synapseyarat.png)
+![synapse](Implementation-photos/25-synapseyarat.png)
 
 ### 2. Adding Role Assignment
 I grant my Synapse workspace’s managed identity the Storage Blob Data Contributor role so I can read and write lake data from Synapse without storing any secrets.. I choose a managed identity because it lets Synapse authenticate to the Data Lake with Azure-issued tokens, so I avoid hard-coding client IDs or secrets and get simpler, safer, and fully automated credential management
 
-![loading](Implementation-photos/26synapseiçinidentity(managedidentity).png)
+![role](Implementation-photos/26synapseiçinidentity(managedidentity).png)
 
-### 3. 
+### 3. Creating Database
+I created a serverless SQL database called awdatabase inside my Synapse workspace so I can run ad-hoc SQL over the files sitting in the lake. With the serverless pool I pay only for the queries I execute, keep zero dedicated compute running, and still expose data through external tables, views, and security objects. This lets me explore the Bronze/Silver/Gold layers with standard T-SQL while relying on the workspace’s managed identity for secure lake access.
 
+![database](Implementation-photos/27serverlessdatabaseoluşturuldu.png)
 
+### 4. Creating Schema
+I created a gold schema to hold my curated, presentation-ready tables and keep them separated from other layers.
+
+![schema](Implementation-photos/29-create-schema.png)
+
+### 5. Creating Views
+I define gold-layer views that query my Silver Parquet files with OPENROWSET, letting me expose curated data sets in SQL without copying anything out of the lake.
+
+![createviews](Implementation-photos/30-viewoluştur.png)
+
+### 6. Creating Master Key
+I create a database master key so I can later store external-data credentials securely within the serverless SQL database.
+
+![masterkey](Implementation-photos/31-master.png)
+
+### 7. Creating Database-Scoped Credential
+I create a database-scoped credential (cred_murat) that binds my serverless SQL database to the workspace’s managed identity, letting me authenticate external data sources without storing keys or passwords.
+
+![credentials](Implementation-photos/32-credentialoluşturuldu.png)
+
+### 8. Creating Data Sources
+I register external data sources for the Silver and Gold folders, map them to my managed-identity credential (cred_murat), and define a Snappy-compressed Parquet file format so I can create external tables over lake data with simple T-SQL.
+
+![datasources](Implementation-photos/33-verikaynakları-oluşturuldu-externaldosya_formatları_belirlendi.png)
+
+### 9. Creating External Tables
+I define the external tables like gold.extsales, instructing Synapse to persist the contents of gold.sales as Snappy-compressed Parquet files under the extsales folder in the Gold area. This lets me query or share the sales data via standard T-SQL while the data continues to reside natively in the lake.
+
+![exttables](Implementation-photos/34-create_external_table.png)
+
+### PowerBI
+
+I copy the serverless SQL endpoint so I can connect from SSMS, Azure Data Studio, or Power BI and run pay-per-query SQL against my lake without deploying any dedicated compute.
+
+![exttables](Implementation-photos/36-powerBI-ile-bağlantı-kurmak-için.png)
+
+I paste the serverless SQL endpoint into Power BI’s SQL Server connector so I can query my Synapse Gold views and external tables directly from Power BI for reporting.
+
+![exttables](Implementation-photos/35kopyalananı-powerbI'ya-ekledik.png)
+
+Finally, I build a Power BI dashboard that queries my Synapse Gold views, plots yearly order and customer counts, and highlights total customers with a KPI card so I can validate the data pipeline and share business-ready insights.
+
+![exttables](Implementation-photos/powerBI.png)
 
 
 
